@@ -13,7 +13,8 @@
             "Windows",
             "troubleshooting",
             "networking"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     },
     {
         "id": 2,
@@ -29,7 +30,8 @@
             "SQL",
             "troubleshooting",
             "technical support"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     },
     {
         "id": 3,
@@ -45,7 +47,8 @@
             "JavaScript",
             "Git",
             "SQL"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     },
     {
         "id": 4,
@@ -61,7 +64,8 @@
             "hardware",
             "troubleshooting",
             "customer service"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     },
     {
         "id": 5,
@@ -77,7 +81,8 @@
             "CSS",
             "JavaScript",
             "React"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     },
     {
         "id": 6,
@@ -93,7 +98,8 @@
             "SQL",
             "Excel",
             "data analysis"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     },
     {
         "id": 7,
@@ -109,7 +115,8 @@
             "Windows",
             "networking",
             "troubleshooting"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     },
     {
         "id": 8,
@@ -124,6 +131,7 @@
             "customer service",
             "communication",
             "problem solving"
-        ]
+        ],
+        "salary_unit": "USD/hour"
     }
 ]

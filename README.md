@@ -1,69 +1,121 @@
-# TeamProject8_M2: Job Finding Agent
+# TeamProject8_M3: Multi-Agent Job Finding System
 
-CEN 4930, Milestone 2. Team 8: George Stephen and Manuel Rosales.
+**Course:** CEN 4930
+**Milestone:** 3
+**Team:** George Stephen and Manuel Rosales
 
 ## Problem
 
-Job seekers waste time scrolling through listings that do not match their
-location, schedule, pay, or skills, so this agent lets them describe what
-they want in plain English and returns only the jobs that fit.
+Job seekers waste time searching through listings that do not match their location, schedule, pay, or skills. This project uses a multi-agent system that interprets job-search requests, searches a local job database, and evaluates how well the returned listings match the user's criteria.
 
-## What the agent can do right now
+## System Architecture
 
-- Take a plain English request, such as "a remote part-time job paying at
-  least $18 an hour that uses Python."
-- Turn it into filters and call the `search_jobs` MCP tool. The tool filters
-  by keywords, location, remote, full or part time, minimum hourly pay, and
-  skills.
-- Summarize the matching jobs, or say clearly that nothing matched, without
-  inventing listings.
+The system uses two agents with separate responsibilities:
 
-The agent uses the OpenAI Agents SDK with the `qwen3` model on the course NRP
-endpoint. It starts the MCP server (`job_mcp_server.py`) itself over stdio.
+1. **Job Finding Agent:** Interprets the user's request, selects search filters, calls MCP tools, and reports the actual results.
+2. **Job Fit Analyst:** Evaluates the search results against the original request and explains matches, limitations, and missing information.
 
-## Not implemented yet
+A Python orchestrator runs the agents sequentially. After the Job Finding Agent calls `search_jobs`, the orchestrator passes the original request and the first agent's final text output to the Job Fit Analyst. The analyst runs only when a search tool call is detected.
 
-- Live job data. The tool searches `jobs.json`, which holds 8 sample listings.
-- Conversation memory. Each request is handled on its own.
-- Applying to jobs or contacting employers.
+The MCP server provides job-search tools and persistent preference storage.
 
-## Setup and run
+```mermaid
+flowchart TD
+    U[User request] --> A[Job Finding Agent]
+    A -->|MCP tool calls| M[MCP Server]
+    M --> J[(jobs.json)]
+    M --> P[(memory.json)]
+    M -->|Tool results| A
+    A --> O[Python orchestrator]
+    O -->|If search_jobs was called| F[Job Fit Analyst]
+    O -->|Otherwise| R[Return first agent response]
+    F --> R[Final response]
+```
 
-Requires Python 3.10 or newer.
+## Features
 
-1. Clone the repo and open a terminal in its folder.
-2. Install the dependencies:
+- Natural-language job-search requests.
+- Filtering by keywords, location, remote status, employment type, minimum salary, and skills.
+- A second agent that evaluates returned listings against the user's criteria.
+- Persistent preferences through `save_preference`, `get_saved_preferences`, and `clear_saved_preferences`.
+- Honest no-match responses instead of fabricated listings.
+- Clarifying questions for ambiguous requests.
+- MCP server communication over standard input/output (stdio).
 
-   ```
+## Technology Stack
+
+- Python
+- OpenAI Agents SDK
+- OpenAI-compatible course NRP inference endpoint using `gpt-oss`
+- Model Context Protocol (MCP) and FastMCP
+- JSON files for sample job data and saved preferences
+- `pytest` and `unittest` for automated testing
+
+## Setup and Run
+
+Requires Python 3.10 or newer and access to the course NRP endpoint.
+
+1. Clone the repository and open a terminal in the project folder.
+2. Create and activate a virtual environment if desired.
+3. Install dependencies:
+
+   ```bash
    pip install -r requirements.txt
    ```
 
-3. Create a file named `.env` in the same folder with the NRP values from the
-   course:
+4. Create a `.env` file in the project root with the course-provided settings:
 
-   ```
+   ```text
    NRP_API_KEY=your_key_here
-   NRP_BASE_URL=the_course_nrp_base_url
+   NRP_BASE_URL=your_course_nrp_base_url
    ```
 
-4. Run the agent, then type a job search at the `You:` prompt. Type `exit` to
-   quit.
+   Keep `.env` private. Never commit API keys or other credentials.
 
-   ```
+5. Start the system:
+
+   ```bash
    python job_agent.py
    ```
 
-Test cases with inputs and expected outputs are in `tests/test_cases.md`.
+6. Enter a job-search request at the `You:` prompt. Type `exit` to quit.
 
-## Known limitations
+## Testing
 
-1. **Sample data only.** The 8 listings are made up and are not real openings.
-2. **Loose text matching.** Any single keyword or skill counts as a match, so
-   broad searches return loosely related jobs, and synonyms such as "coder"
-   for "developer" do not match.
-3. **Filter choice depends on the model.** The model picks the search filters,
-   so the same request can produce different filters from run to run. The
-   rule against inventing jobs is a prompt instruction, not a guarantee.
+Run the automated tests with:
 
-`mcp` is pinned below 2.0 in `requirements.txt` because version 2 renamed
-`FastMCP` and the server will not start with it.
+```bash
+python -m pytest -v
+```
+
+The current test suite contains 16 passing tests:
+
+- 10 job-search tests covering filters, missing or malformed data, and no-match results.
+- 6 memory tests covering saving, retrieving, validating, and clearing preferences.
+
+Manual demonstrations have also verified matching searches, no-match searches, saved-preference persistence across restart, clarification for an ambiguous request, and a refusal to fabricate jobs. These demonstrations do not replace the remaining planned integration tests.
+
+See `tests/test_cases.md` for the evaluation plan, expected results, verification status, and limitations.
+
+## Known Limitations
+
+1. **Sample data only:** `jobs.json` contains eight fictional listings. The system is not connected to live job boards.
+2. **Rule-based matching:** Keyword and skill matching use simple text rules and do not provide comprehensive semantic matching.
+3. **Model-dependent filter selection:** The agent interprets requests using a language model, so filter choices may vary.
+4. **Text-based agent transfer:** The orchestrator passes the first agent's final text output to the analyst rather than a structured raw MCP result object.
+5. **Local persistence:** Preferences are stored in `memory.json` on the machine running the project. This is not a multi-user database.
+6. **Inference dependency:** Agent responses depend on the availability and behavior of the course NRP endpoint.
+7. **No job applications:** The system does not contact employers, submit applications, or verify whether a listing is currently open.
+
+## CHANGES
+
+### Milestone 3
+
+- Extended the M2 single-agent prototype into a two-agent workflow.
+- Added the Job Fit Analyst to assess returned listings against user requirements.
+- Added sequential orchestration that invokes the analyst after an actual `search_jobs` tool call.
+- Added MCP tools for saving, retrieving, and clearing user-approved job preferences.
+- Added persistent JSON-based preference storage and input validation.
+- Added automated tests for job search and memory operations.
+- Expanded the evaluation plan to cover handoff behavior, ambiguous requests, prompt injection, reliability, and combined filters.
+- Documented architecture, evaluation evidence, and remaining limitations.

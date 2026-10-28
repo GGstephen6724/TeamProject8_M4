@@ -117,20 +117,37 @@ def search_jobs(
 
 
         # Keyword filter
-        if keywords:
 
+        # Keyword filter
+        if keywords:
             keyword_terms = [
                 term.strip().lower()
                 for term in keywords.split()
                 if term.strip()
             ]
 
+            # Expand common job-search terms to related titles.
+            keyword_aliases = {
+                "developer": ["developer", "programmer", "engineer"],
+                "development": [
+                    "development", "developer", "programmer",
+                    "programming", "software engineer",
+                ],
+                "software": ["software", "programmer"],
+                "web": ["web", "frontend", "front-end", "website"],
+                "programming": ["programming", "programmer", "developer"],
+            }
+
+            expanded_terms = []
+            for term in keyword_terms:
+                expanded_terms.extend(keyword_aliases.get(term, [term]))
+
             if not any(
                 term in searchable_text
-                for term in keyword_terms
+                for term in expanded_terms
             ):
-
                 continue
+
 
 
         # Location filter
@@ -215,6 +232,87 @@ def search_jobs(
 # ------------------------------------------------
 # START MCP SERVER
 # ------------------------------------------------
+
+
+MEMORY_FILE = Path(__file__).with_name("memory.json")
+
+ALLOWED_PREFERENCES = {
+    "keywords",
+    "location",
+    "remote",
+    "employment_type",
+    "minimum_salary",
+    "skills",
+}
+
+
+def load_memory():
+    if not MEMORY_FILE.exists():
+        return {}
+
+    try:
+        with MEMORY_FILE.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+        return data if isinstance(data, dict) else {}
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def save_memory(data):
+    with MEMORY_FILE.open("w", encoding="utf-8") as file:
+        json.dump(data, file, indent=2)
+
+
+@mcp.tool()
+def get_saved_preferences() -> str:
+    """Retrieve saved job-search preferences."""
+    return json.dumps(load_memory(), indent=2)
+
+
+@mcp.tool()
+def save_preference(key: str, value: str) -> str:
+    """Save a job preference only when the user explicitly asks."""
+    key = key.strip().lower()
+
+    if key not in ALLOWED_PREFERENCES:
+        return "ERROR: Unsupported preference key."
+
+    value = value.strip()
+
+    if key == "remote":
+        if value.lower() not in {"true", "false"}:
+            return "ERROR: remote must be true or false."
+        value = value.lower() == "true"
+
+    elif key == "minimum_salary":
+        try:
+            value = float(value)
+            if value < 0:
+                return "ERROR: minimum_salary cannot be negative."
+        except ValueError:
+            return "ERROR: minimum_salary must be a number."
+
+    preferences = load_memory()
+    preferences[key] = value
+
+    try:
+        save_memory(preferences)
+    except OSError:
+        return "ERROR: Could not save preferences."
+
+    return f"Saved preference '{key}'."
+
+
+@mcp.tool()
+def clear_saved_preferences() -> str:
+    """Clear all saved job-search preferences."""
+    try:
+        save_memory({})
+    except OSError:
+        return "ERROR: Could not clear saved preferences."
+
+    return "All saved job-search preferences have been cleared."
+
 
 if __name__ == "__main__":
 
