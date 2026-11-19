@@ -1,0 +1,3 @@
+*.pdf binary
+evaluation/**/*.json linguist-generated=true
+evaluation/**/*.jsonl linguist-generated=true

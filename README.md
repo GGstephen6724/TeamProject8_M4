@@ -5,6 +5,8 @@
 
 This two-agent educational prototype interprets job-search requests, searches eight fictional listings through MCP, and evaluates record-grounded fit. It does not verify current vacancies, contact employers, or submit applications.
 
+Review: https://github.com/GGstephen6724/TeamProject8_M4/pull/1 (draft, not merged). Refined branch: https://github.com/mrosadevs/TeamProject8_M4/tree/milestone4-evaluation
+
 ## Evidence at a glance
 
 - Full precommitted suite: **9/10 cases (90%)**, **26/30 individual runs**. Three repetitions; at least two pass for case success.

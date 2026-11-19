@@ -14,6 +14,10 @@ Repository and provenance
 
 Canonical team repository: https://github.com/GGstephen6724/TeamProject8_M4. Work starts from George Stephen's November 18 commit d55baf6a, whose parent is the actual M3 commit 8a6d910. The inherited local checkout is named TeamProject8_M2; its history is preserved. New M4 changes use their actual current dates.
 
+Refined code: https://github.com/mrosadevs/TeamProject8_M4/tree/milestone4-evaluation
+Draft review: https://github.com/GGstephen6724/TeamProject8_M4/pull/1
+The canonical team main branch is unchanged until the draft is reviewed and merged.
+
 This document distinguishes teammate-reported results, newly executed tests, measured engineering regressions, synthetic rehearsal material, and missing human evidence. It is not a claim that the whole milestone is complete.
 
 
