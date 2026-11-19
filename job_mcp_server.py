@@ -53,7 +53,7 @@ def search_jobs(keywords:str='',location:str='',remote:bool=False,employment_typ
     aliases={'developer':['developer','programmer','engineer'],'development':['development','developer','programmer','programming','software engineer'],
              'software':['software','programmer'],'web':['web','frontend','front-end','website'],
              'programming':['programming','programmer','developer']}
-    terms=[a for term in keywords.casefold().split() for a in aliases.get(term,[term])]
+    terms=[a for term in re.findall(r'[a-z0-9+#-]+',keywords.casefold()) for a in aliases.get(term,[term])]
     matches=[]
     for job in jobs:
         text=' '.join([job['title'],job['company'],*job['skills']]).casefold()

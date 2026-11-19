@@ -129,7 +129,7 @@ async def main_async(args):
                      'runs_total':args.repeats,'critic_mean':round(statistics.mean(scores),3) if scores else '',
                      'failed_checks':json.dumps([r['checks'] for r in runs if not r['passed']])})
     with (args.output/'evaluation_results.csv').open('w',newline='') as stream:
-        writer=csv.DictWriter(stream,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
+        writer=csv.DictWriter(stream,fieldnames=list(rows[0]),lineterminator="\n");writer.writeheader();writer.writerows(rows)
     summary={'model':model,'repetitions':args.repeats,'cases':len(cases),'case_passes':sum(r['pass_fail']=='PASS' for r in rows),
              'run_passes':sum(r['passed'] for r in results),'runs':len(results),
              'case_pass_rate':100*sum(r['pass_fail']=='PASS' for r in rows)/len(rows),

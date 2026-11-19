@@ -1,0 +1,145 @@
+{
+  "case_id": "TC06",
+  "repeat": 1,
+  "input": "Find remote, part-time developer jobs paying at least $18 per hour, then evaluate which results best match my request.",
+  "expected": "Search then explicit analyst handoff; Junior Web Developer only.",
+  "checks": {
+    "exact_ids": true,
+    "search_and_handoff": true,
+    "grounding": true,
+    "critic_at_least_four": true
+  },
+  "passed": true,
+  "critic": {
+    "accuracy": 5,
+    "honesty": 4,
+    "usefulness": 4,
+    "rationale": "The response faithfully reproduces the sole job listing returned by the tool and does not fabricate any details, earning a perfect accuracy score. It clearly notes missing information (posting freshness, qualifications) and the prototype nature of the data, showing honest limitation awareness, though it could have emphasized the single-result limitation more, leading to a minor shortfall. The answer is useful by presenting the relevant job, its pay range, and a fit assessment, but the brief commentary on remote handling is slightly unclear, preventing a top usefulness rating."
+  },
+  "turns": [
+    {
+      "request": "Find remote, part-time developer jobs paying at least $18 per hour, then evaluate which results best match my request.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [
+          5
+        ],
+        "message": "I found one remote, part\u2011time developer role that meets your $18+/hour minimum. It\u2019s a Junior Web Developer position paying $19\u2011$26\u202fUSD/hour. This listing matches all of your explicit criteria (remote, part\u2011time, developer, min $18/hr). No other results were returned, so this is the best (and only) match."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "developer",
+            "remote": true,
+            "employment_type": "part-time",
+            "minimum_salary": 18
+          },
+          "output": [
+            {
+              "id": 5,
+              "title": "Junior Web Developer",
+              "company": "Coastal Web Group",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 19,
+              "salary_max": 26,
+              "skills": [
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "React"
+              ],
+              "salary_unit": "USD/hour"
+            }
+          ],
+          "is_error": false,
+          "seconds": 0.007
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1476,
+          "output_tokens": 297,
+          "total_tokens": 1773
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 446,
+          "output_tokens": 384,
+          "total_tokens": 830
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 611,
+          "output_tokens": 334,
+          "total_tokens": 945
+        }
+      },
+      "records": [
+        {
+          "id": 5,
+          "title": "Junior Web Developer",
+          "company": "Coastal Web Group",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 19,
+          "salary_max": 26,
+          "skills": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "React"
+          ],
+          "salary_unit": "USD/hour"
+        }
+      ],
+      "analyst": {
+        "assessments": [
+          {
+            "job_id": 5,
+            "fit_score": 5,
+            "matched_skills": [],
+            "missing_information": [
+              "posting_freshness",
+              "qualifications"
+            ]
+          }
+        ]
+      },
+      "filters": {
+        "keywords": "developer",
+        "remote": true,
+        "employment_type": "part-time",
+        "minimum_salary": 18
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': 'developer', 'remote': True, 'employment_type': 'part-time', 'minimum_salary': 18}\nSkills use any-match; remote=False means no remote restriction.\n[5] Junior Web Developer | Coastal Web Group\nRemote | Part-time | USD 19-26/hour\nListing skills: HTML, CSS, JavaScript, React\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: none identified\nNot verified: posting_freshness, qualifications\nConfirm schedule, qualifications, availability and pay with the actual employer before acting.",
+      "seconds": 22.933
+    }
+  ],
+  "human_review": "not required by M3 plan",
+  "timestamp_utc": "2026-11-19T04:12:32.359050+00:00",
+  "initial_critic": {
+    "accuracy": 4,
+    "honesty": 5,
+    "usefulness": 5,
+    "rationale": "The answer correctly restates the provided job listing (remote, part\u2011time, $19\u201126/hr) and honestly notes missing verification details. Minor inconsistency appears in the note about \"remote=False\" which conflicts with the evidence, lowering accuracy slightly."
+  },
+  "protocol_repair": "One rescore with literal raw MCP tool events; no agent rerun or selective retries."
+}

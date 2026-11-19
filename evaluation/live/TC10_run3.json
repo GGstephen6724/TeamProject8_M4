@@ -1,0 +1,156 @@
+{
+  "case_id": "TC10",
+  "repeat": 3,
+  "input": "Search for jobs requiring Python with a minimum salary of $24 per hour.",
+  "expected": "Junior Software Developer only; excludes Data Analyst Intern.",
+  "checks": {
+    "exact_ids": true,
+    "search_and_handoff": true,
+    "grounding": true,
+    "critic_at_least_four": true
+  },
+  "passed": true,
+  "critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 5,
+    "rationale": "The answer faithfully reproduces the single job listing from the evidence, correctly shows salary, remote status, and required skill. It transparently labels the data as a fictional prototype and notes missing details, giving prudent advice to verify with the employer. No unsupported claims are made, making it both accurate and useful."
+  },
+  "turns": [
+    {
+      "request": "Search for jobs requiring Python with a minimum salary of $24 per hour.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [
+          3
+        ],
+        "message": "Found 1 job matching Python skill with at least $24/hour."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "",
+            "location": "",
+            "remote": false,
+            "employment_type": "",
+            "minimum_salary": 24,
+            "skills": "Python",
+            "skill_match": "any",
+            "salary_period": "hour"
+          },
+          "output": [
+            {
+              "id": 3,
+              "title": "Junior Software Developer",
+              "company": "Florida Software Solutions",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Full-time",
+              "salary_min": 24,
+              "salary_max": 32,
+              "skills": [
+                "Python",
+                "JavaScript",
+                "Git",
+                "SQL"
+              ],
+              "salary_unit": "USD/hour"
+            }
+          ],
+          "is_error": false,
+          "seconds": 0.0055
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1391,
+          "output_tokens": 172,
+          "total_tokens": 1563
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 383,
+          "output_tokens": 371,
+          "total_tokens": 754
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 646,
+          "output_tokens": 588,
+          "total_tokens": 1234
+        }
+      },
+      "records": [
+        {
+          "id": 3,
+          "title": "Junior Software Developer",
+          "company": "Florida Software Solutions",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Full-time",
+          "salary_min": 24,
+          "salary_max": 32,
+          "skills": [
+            "Python",
+            "JavaScript",
+            "Git",
+            "SQL"
+          ],
+          "salary_unit": "USD/hour"
+        }
+      ],
+      "analyst": {
+        "assessments": [
+          {
+            "job_id": 3,
+            "fit_score": 5,
+            "matched_skills": [
+              "Python"
+            ],
+            "missing_information": [
+              "schedule",
+              "posting_freshness",
+              "qualifications"
+            ]
+          }
+        ]
+      },
+      "filters": {
+        "keywords": "",
+        "location": "",
+        "remote": false,
+        "employment_type": "",
+        "minimum_salary": 24,
+        "skills": "Python",
+        "skill_match": "any",
+        "salary_period": "hour"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': '', 'location': '', 'remote': False, 'employment_type': '', 'minimum_salary': 24, 'skills': 'Python', 'skill_match': 'any', 'salary_period': 'hour'}\nSkills use any-match; remote=False means no remote restriction.\n[3] Junior Software Developer | Florida Software Solutions\nRemote | Full-time | USD 24-32/hour\nListing skills: Python, JavaScript, Git, SQL\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: Python\nNot verified: schedule, posting_freshness, qualifications\nConfirm schedule, qualifications, availability and pay with the actual employer before acting.",
+      "seconds": 26.237
+    }
+  ],
+  "human_review": "not required by M3 plan",
+  "timestamp_utc": "2026-11-19T04:14:48.025828+00:00",
+  "initial_critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 5,
+    "rationale": "The answer faithfully reproduces the only provided job that meets the Python and $24/hour criteria, adds a clear disclaimer about the fictional nature of the data, and offers practical advice for follow\u2011up."
+  },
+  "protocol_repair": "One rescore with literal raw MCP tool events; no agent rerun or selective retries."
+}

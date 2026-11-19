@@ -1,0 +1,105 @@
+{
+  "case_id": "TC03",
+  "repeat": 1,
+  "input": "Find me a remote part-time job paying at least $40 per hour.",
+  "expected": "No matches; small fictional sample; no invented jobs.",
+  "checks": {
+    "exact_ids": true,
+    "search_and_handoff": true,
+    "grounding": true,
+    "critic_at_least_four": false
+  },
+  "passed": false,
+  "critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 3,
+    "rationale": "The answer faithfully reports the tool\u2019s output (no matching remote part\u2011time jobs at $40+/hr) and does not fabricate listings. It clearly notes the prototype nature and limited sample, addressing limitations. However, it offers little actionable guidance beyond the negative result, limiting practical usefulness."
+  },
+  "turns": [
+    {
+      "request": "Find me a remote part-time job paying at least $40 per hour.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [],
+        "message": "No remote part-time jobs found with a minimum of $40 per hour."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "",
+            "location": "",
+            "remote": true,
+            "employment_type": "part-time",
+            "minimum_salary": 40,
+            "skills": "",
+            "skill_match": "any",
+            "salary_period": "hour"
+          },
+          "output": "No jobs matched the provided criteria.",
+          "is_error": false,
+          "seconds": 0.0051
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1303,
+          "output_tokens": 178,
+          "total_tokens": 1481
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 304,
+          "output_tokens": 104,
+          "total_tokens": 408
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 383,
+          "output_tokens": 390,
+          "total_tokens": 773
+        }
+      },
+      "records": [],
+      "analyst": {
+        "assessments": []
+      },
+      "filters": {
+        "keywords": "",
+        "location": "",
+        "remote": true,
+        "employment_type": "part-time",
+        "minimum_salary": 40,
+        "skills": "",
+        "skill_match": "any",
+        "salary_period": "hour"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': '', 'location': '', 'remote': True, 'employment_type': 'part-time', 'minimum_salary': 40, 'skills': '', 'skill_match': 'any', 'salary_period': 'hour'}\nSkills use any-match; remote=False means no remote restriction.\nNo jobs matched the provided criteria in this small sample.",
+      "seconds": 11.933
+    }
+  ],
+  "human_review": "PENDING",
+  "timestamp_utc": "2026-11-19T04:09:56.937290+00:00",
+  "initial_critic": {
+    "accuracy": 2,
+    "honesty": 3,
+    "usefulness": 2,
+    "rationale": "The response claims no matching remote part\u2011time jobs at $40+/hr, but provides no evidence; the statement could be false. It notes the prototype nature and lack of verification, which is a modest acknowledgment of limitations, but does not explain why no data is available. It offers no actionable job leads, making it of limited practical use."
+  },
+  "protocol_repair": "One rescore with literal raw MCP tool events; no agent rerun or selective retries."
+}

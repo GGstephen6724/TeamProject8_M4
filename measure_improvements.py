@@ -19,6 +19,7 @@ def main():
         spec=importlib.util.spec_from_file_location('m3_baseline',path);old=importlib.util.module_from_spec(spec);spec.loader.exec_module(old)
         old.DATABASE=HERE/'jobs.json'
         cases=[
+          ('keyword_punctuation',{'keywords':'software developer, software engineer, programmer','remote':True,'employment_type':'Part-time','minimum_salary':18},{'keywords':'software developer, software engineer, programmer','remote':True,'employment_type':'Part-time','minimum_salary':18},[5]),
           ('employment_part_time',{'employment_type':'part time'},{'employment_type':'part time'},[1,4,5,6,8]),
           ('employment_full_time',{'employment_type':'full time'},{'employment_type':'full time'},[2,3,7]),
           ('annual_salary',{'minimum_salary':40000},{'minimum_salary':40000,'salary_period':'year'},[2,3]),
@@ -36,7 +37,7 @@ def main():
             rows.append({'change':name,'expected':'reject','before_actual':'no programmatic check in M3',
                          'after_actual':'rejected' if not fn() else 'accepted','before_pass':False,'after_pass':not fn()})
     with (directory/'improvement_results.csv').open('w',newline='') as stream:
-        writer=csv.DictWriter(stream,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
+        writer=csv.DictWriter(stream,fieldnames=list(rows[0]),lineterminator="\n");writer.writeheader();writer.writerows(rows)
     print(json.dumps(rows,indent=2))
 
 if __name__=='__main__':main()

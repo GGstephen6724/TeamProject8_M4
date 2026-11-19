@@ -5,6 +5,9 @@ import job_mcp_server as server
 from grounding import SearchReply,Assessment,AnalystReply,validate_search,validate_analyst,render
 
 class M4RegressionTests(unittest.TestCase):
+    def test_comma_separated_keyword_aliases(self):
+        result=server.search_jobs(keywords='software developer, software engineer, programmer',remote=True,employment_type='part time',minimum_salary=18)
+        self.assertEqual({j['id'] for j in json.loads(result)},{5})
     def test_employment_variants(self):
         for value in ['part time','PART_TIME','Part-time']:
             records=json.loads(server.search_jobs(employment_type=value))
@@ -38,6 +41,10 @@ class M4RegressionTests(unittest.TestCase):
         records=server.load_jobs()[:1];text=render(records)
         self.assertIn('IT Help Desk Technician | SunCoast Technology',text)
         self.assertIn('USD 18-22/hour',text);self.assertIn('fictional',text)
+    def test_no_match_offers_explicit_options(self):
+        text=render([])
+        self.assertIn('No jobs matched',text);self.assertIn('not relax it silently',text)
+        self.assertIn('does not mean no such jobs exist elsewhere',text)
     def test_memory_nonfinite_rejected(self):
         with tempfile.TemporaryDirectory() as d,patch.object(server,'MEMORY_FILE',Path(d)/'memory.json'):
             self.assertTrue(server.save_preference('minimum_salary','nan').startswith('ERROR:'))

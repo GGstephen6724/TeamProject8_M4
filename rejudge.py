@@ -32,7 +32,7 @@ async def main():
             'critic_mean':round(statistics.mean(scores),3) if scores else '',
             'failed_checks':json.dumps([r['checks'] for r in runs if not r['passed']])})
     with (folder/'evaluation_results.csv').open('w',newline='') as stream:
-        writer=csv.DictWriter(stream,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
+        writer=csv.DictWriter(stream,fieldnames=list(rows[0]),lineterminator="\n");writer.writeheader();writer.writerows(rows)
     summary=json.loads((folder/'summary.json').read_text())
     summary['initial_case_passes']=summary['case_passes'];summary['initial_run_passes']=summary['run_passes']
     summary['case_passes']=sum(r['pass_fail']=='PASS' for r in rows);summary['run_passes']=sum(r['passed'] for r in records)

@@ -1,0 +1,99 @@
+{
+  "case_id": "TC04",
+  "repeat": 2,
+  "input": "Find remote, part-time software development jobs paying at least $18 per hour.",
+  "expected": "Junior Web Developer only; related-title match, not an exact title.",
+  "checks": {
+    "exact_ids": false,
+    "search_and_handoff": true,
+    "grounding": true,
+    "critic_at_least_four": false
+  },
+  "passed": false,
+  "critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 3,
+    "rationale": "The response accurately reflects the tool's output (no matching jobs) and openly states that the listings are fictional and unverified, meeting honesty standards. However, it offers limited actionable guidance beyond stating no results, reducing its practical usefulness for the user."
+  },
+  "turns": [
+    {
+      "request": "Find remote, part-time software development jobs paying at least $18 per hour.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [],
+        "message": "No remote, part\u2011time software development jobs were found for a minimum of $18\u202fper hour."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "software developer, software engineer, programmer",
+            "remote": true,
+            "employment_type": "part time",
+            "minimum_salary": 18,
+            "skill_match": "any"
+          },
+          "output": "No jobs matched the provided criteria.",
+          "is_error": false,
+          "seconds": 0.007
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1331,
+          "output_tokens": 207,
+          "total_tokens": 1538
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 308,
+          "output_tokens": 121,
+          "total_tokens": 429
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 369,
+          "output_tokens": 310,
+          "total_tokens": 679
+        }
+      },
+      "records": [],
+      "analyst": {
+        "assessments": []
+      },
+      "filters": {
+        "keywords": "software developer, software engineer, programmer",
+        "remote": true,
+        "employment_type": "part time",
+        "minimum_salary": 18,
+        "skill_match": "any"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': 'software developer, software engineer, programmer', 'remote': True, 'employment_type': 'part time', 'minimum_salary': 18, 'skill_match': 'any'}\nSkills use any-match; remote=False means no remote restriction.\nNo jobs matched the provided criteria in this small sample.",
+      "seconds": 13.998
+    }
+  ],
+  "human_review": "not required by M3 plan",
+  "timestamp_utc": "2026-11-19T04:10:51.003778+00:00",
+  "initial_critic": {
+    "accuracy": 1,
+    "honesty": 2,
+    "usefulness": 1,
+    "rationale": "The answer claims no matching jobs without any evidence, making an unsupported factual assertion (major inaccuracy). It does not clearly disclose the lack of data or search limitations, so the honesty/limitations rating is low. The response provides no actionable information, rendering it largely unhelpful."
+  },
+  "protocol_repair": "One rescore with literal raw MCP tool events; no agent rerun or selective retries."
+}

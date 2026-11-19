@@ -1,0 +1,98 @@
+{
+  "case_id": "TC03",
+  "repeat": 1,
+  "input": "Find me a remote part-time job paying at least $40 per hour.",
+  "expected": "No matches; small fictional sample; no invented jobs.",
+  "checks": {
+    "exact_ids": true,
+    "search_and_handoff": true,
+    "grounding": true,
+    "critic_at_least_four": true
+  },
+  "passed": true,
+  "critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 4,
+    "rationale": "The response faithfully reports the tool's output (no matching jobs) and clearly states the fictional nature of the data and its limitations. It offers practical next steps. A minor confusing note about 'remote=False' slightly reduces usefulness, but overall the answer is accurate and transparent."
+  },
+  "turns": [
+    {
+      "request": "Find me a remote part-time job paying at least $40 per hour.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [],
+        "message": "I couldn't find any remote, part\u2011time listings that meet a $40\u2011per\u2011hour minimum."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "",
+            "location": "",
+            "remote": true,
+            "employment_type": "part-time",
+            "minimum_salary": 40,
+            "skills": "",
+            "skill_match": "any",
+            "salary_period": "hour"
+          },
+          "output": "No jobs matched the provided criteria.",
+          "is_error": false,
+          "seconds": 0.0056
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1294,
+          "output_tokens": 175,
+          "total_tokens": 1469
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 316,
+          "output_tokens": 85,
+          "total_tokens": 401
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 449,
+          "output_tokens": 414,
+          "total_tokens": 863
+        }
+      },
+      "records": [],
+      "analyst": {
+        "assessments": []
+      },
+      "filters": {
+        "keywords": "",
+        "location": "",
+        "remote": true,
+        "employment_type": "part-time",
+        "minimum_salary": 40,
+        "skills": "",
+        "skill_match": "any",
+        "salary_period": "hour"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': '', 'location': '', 'remote': True, 'employment_type': 'part-time', 'minimum_salary': 40, 'skills': '', 'skill_match': 'any', 'salary_period': 'hour'}\nSkills use any-match; remote=False means no remote restriction.\nNo jobs matched the provided criteria in this small sample. This does not mean no such jobs exist elsewhere.\nIf you want, explicitly lower the minimum pay, broaden the location or employment type, or search different skills. Tell me which constraint to change; I will not relax it silently.\nUse a current job board or career-center listing source to check opportunities beyond this fictional dataset.",
+      "seconds": 15.276
+    }
+  ],
+  "human_review": "PENDING",
+  "timestamp_utc": "2026-11-19T04:17:47.002095+00:00"
+}

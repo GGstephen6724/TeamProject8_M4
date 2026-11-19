@@ -1,0 +1,247 @@
+{
+  "case_id": "TC01",
+  "repeat": 1,
+  "input": "Find me a remote part-time job paying at least $18 per hour. I have Python, SQL, JavaScript, and customer service skills.",
+  "expected": "Remote, part-time, >=18/hour, any listed skill; IDs 1,5,6.",
+  "checks": {
+    "exact_ids": true,
+    "search_and_handoff": true,
+    "grounding": true,
+    "critic_at_least_four": true
+  },
+  "passed": true,
+  "critic": {
+    "accuracy": 4,
+    "honesty": 5,
+    "usefulness": 5,
+    "rationale": "The job details (titles, companies, remote status, part\u2011time, salary ranges, and skill lists) match the provided evidence. The extra note about \"remote=False\" contradicts the applied filter, causing a minor factual inconsistency. The disclaimer correctly states the listings are fictional, meeting the honesty requirement. The answer is concise, relevant, and gives clear next steps, making it very useful for the requester."
+  },
+  "turns": [
+    {
+      "request": "Find me a remote part-time job paying at least $18 per hour. I have Python, SQL, JavaScript, and customer service skills.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [
+          1,
+          5,
+          6
+        ],
+        "message": "I found three remote part\u2011time listings that meet your $18+/hour requirement and match at least one of your skills (Python, SQL, JavaScript, or customer service). Let me know if any of these look good or if you\u2019d like to narrow the search further."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "",
+            "location": "",
+            "remote": true,
+            "employment_type": "part-time",
+            "minimum_salary": 18,
+            "skills": "Python,SQL,JavaScript,customer service",
+            "skill_match": "any",
+            "salary_period": "hour"
+          },
+          "output": [
+            {
+              "id": 1,
+              "title": "IT Help Desk Technician",
+              "company": "SunCoast Technology",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 18,
+              "salary_max": 22,
+              "skills": [
+                "customer service",
+                "Windows",
+                "troubleshooting",
+                "networking"
+              ],
+              "salary_unit": "USD/hour"
+            },
+            {
+              "id": 5,
+              "title": "Junior Web Developer",
+              "company": "Coastal Web Group",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 19,
+              "salary_max": 26,
+              "skills": [
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "React"
+              ],
+              "salary_unit": "USD/hour"
+            },
+            {
+              "id": 6,
+              "title": "Data Analyst Intern",
+              "company": "Florida Analytics",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 18,
+              "salary_max": 23,
+              "skills": [
+                "Python",
+                "SQL",
+                "Excel",
+                "data analysis"
+              ],
+              "salary_unit": "USD/hour"
+            }
+          ],
+          "is_error": false,
+          "seconds": 0.0033
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1736,
+          "output_tokens": 331,
+          "total_tokens": 2067
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 624,
+          "output_tokens": 810,
+          "total_tokens": 1434
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 924,
+          "output_tokens": 675,
+          "total_tokens": 1599
+        }
+      },
+      "records": [
+        {
+          "id": 1,
+          "title": "IT Help Desk Technician",
+          "company": "SunCoast Technology",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 18,
+          "salary_max": 22,
+          "skills": [
+            "customer service",
+            "Windows",
+            "troubleshooting",
+            "networking"
+          ],
+          "salary_unit": "USD/hour"
+        },
+        {
+          "id": 5,
+          "title": "Junior Web Developer",
+          "company": "Coastal Web Group",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 19,
+          "salary_max": 26,
+          "skills": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "React"
+          ],
+          "salary_unit": "USD/hour"
+        },
+        {
+          "id": 6,
+          "title": "Data Analyst Intern",
+          "company": "Florida Analytics",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 18,
+          "salary_max": 23,
+          "skills": [
+            "Python",
+            "SQL",
+            "Excel",
+            "data analysis"
+          ],
+          "salary_unit": "USD/hour"
+        }
+      ],
+      "analyst": {
+        "assessments": [
+          {
+            "job_id": 1,
+            "fit_score": 4,
+            "matched_skills": [
+              "customer service"
+            ],
+            "missing_information": [
+              "schedule",
+              "posting_freshness",
+              "qualifications",
+              "commute"
+            ]
+          },
+          {
+            "job_id": 5,
+            "fit_score": 4,
+            "matched_skills": [
+              "JavaScript"
+            ],
+            "missing_information": [
+              "schedule",
+              "posting_freshness",
+              "qualifications",
+              "commute"
+            ]
+          },
+          {
+            "job_id": 6,
+            "fit_score": 5,
+            "matched_skills": [
+              "Python",
+              "SQL"
+            ],
+            "missing_information": [
+              "schedule",
+              "posting_freshness",
+              "qualifications",
+              "commute"
+            ]
+          }
+        ]
+      },
+      "filters": {
+        "keywords": "",
+        "location": "",
+        "remote": true,
+        "employment_type": "part-time",
+        "minimum_salary": 18,
+        "skills": "Python,SQL,JavaScript,customer service",
+        "skill_match": "any",
+        "salary_period": "hour"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': '', 'location': '', 'remote': True, 'employment_type': 'part-time', 'minimum_salary': 18, 'skills': 'Python,SQL,JavaScript,customer service', 'skill_match': 'any', 'salary_period': 'hour'}\nSkills use any-match; remote=False means no remote restriction.\n[1] IT Help Desk Technician | SunCoast Technology\nRemote | Part-time | USD 18-22/hour\nListing skills: customer service, Windows, troubleshooting, networking\nAnalyst fit judgment: 4/5 (assessment, not an employer decision).\nSupported skill overlap: customer service\nNot verified: schedule, posting_freshness, qualifications, commute\n[5] Junior Web Developer | Coastal Web Group\nRemote | Part-time | USD 19-26/hour\nListing skills: HTML, CSS, JavaScript, React\nAnalyst fit judgment: 4/5 (assessment, not an employer decision).\nSupported skill overlap: JavaScript\nNot verified: schedule, posting_freshness, qualifications, commute\n[6] Data Analyst Intern | Florida Analytics\nRemote | Part-time | USD 18-23/hour\nListing skills: Python, SQL, Excel, data analysis\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: Python, SQL\nNot verified: schedule, posting_freshness, qualifications, commute\nConfirm schedule, qualifications, availability and pay with the actual employer before acting.",
+      "seconds": 47.326
+    }
+  ],
+  "human_review": "not required by M3 plan",
+  "timestamp_utc": "2026-11-19T04:09:27.388980+00:00"
+}

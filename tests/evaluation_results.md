@@ -1,4 +1,6 @@
-﻿# Milestone 4 – Formal Evaluation Results
+> Provenance: teammate-reported baseline by George Stephen at d55baf6a (Nov 18). The new three-repeat M4 results and critic evidence are in ../evaluation_results.csv and ../evaluation/. This document is retained for attribution, not substituted for the new run.
+
+# Milestone 4 – Formal Evaluation Results
 
 **Project:** TeamProject8 – Job Finding Agent  
 **Evaluation:** M3 Evaluation Plan Executed for M4  

@@ -41,7 +41,10 @@ def render(records,analyst=None,filters=None,error=None):
         lines+=['Applied filters: '+str(filters),'Skills use '+filters.get('skill_match','any')+'-match; remote=False means no remote restriction.']
         if filters.get('salary_period')=='year':lines+=['Annual/hourly comparison assumes 2,080 hours/year, not a guaranteed annual salary.']
     if error:return '\n'.join(lines+['Database unavailable: '+error])
-    if not records:return '\n'.join(lines+['No jobs matched the provided criteria in this small sample.'])
+    if not records:return '\n'.join(lines+[
+        'No jobs matched the provided criteria in this small sample. This does not mean no such jobs exist elsewhere.',
+        'If you want, explicitly lower the minimum pay, broaden the location or employment type, or search different skills. Tell me which constraint to change; I will not relax it silently.',
+        'Use a current job board or career-center listing source to check opportunities beyond this fictional dataset.'])
     assessments={a.job_id:a for a in analyst.assessments} if analyst else {}
     for j in records:
         lines += [f"[{j['id']}] {j['title']} | {j['company']}",
