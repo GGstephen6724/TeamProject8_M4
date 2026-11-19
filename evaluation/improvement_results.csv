@@ -1,0 +1,9 @@
+change,expected,before_actual,after_actual,before_pass,after_pass
+keyword_punctuation,[5],[],[5],False,True
+employment_part_time,"[1, 4, 5, 6, 8]",[],"[1, 4, 5, 6, 8]",False,True
+employment_full_time,"[2, 3, 7]",[],"[2, 3, 7]",False,True
+annual_salary,"[2, 3]",[],"[2, 3]",False,True
+all_skills,[],"[3, 5, 6]",[],False,True
+fabricated_finder_id,reject,no programmatic check in M3,rejected,False,True
+fabricated_analyst_id,reject,no programmatic check in M3,rejected,False,True
+unsupported_skill,reject,no programmatic check in M3,rejected,False,True

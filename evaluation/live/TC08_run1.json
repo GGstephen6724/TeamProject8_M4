@@ -1,0 +1,32 @@
+{
+  "case_id": "TC08",
+  "repeat": 1,
+  "input": "Find me a good job.",
+  "expected": "Clarify, no search and no analyst.",
+  "checks": {
+    "exact_ids": true,
+    "clarify_no_tools": true
+  },
+  "passed": true,
+  "critic": null,
+  "turns": [
+    {
+      "request": "Find me a good job.",
+      "finder": {
+        "kind": "clarification",
+        "job_ids": [],
+        "message": "More criteria needed."
+      },
+      "tools": [],
+      "handoff": false,
+      "guardrails": [],
+      "usage": {},
+      "records": [],
+      "analyst": null,
+      "final": "Please specify a job type, location/remote preference, schedule, pay or skills.",
+      "seconds": 0.0
+    }
+  ],
+  "human_review": "PENDING",
+  "timestamp_utc": "2026-11-19T04:13:17.181294+00:00"
+}

@@ -1,5 +1,5 @@
-openai-agents
-openai
-python-dotenv
-mcp<2
-fastmcp
+openai-agents==0.22.0
+openai>=3.3,<4
+python-dotenv>=1,<2
+mcp>=1.24,<2
+pydantic>=2.10,<3

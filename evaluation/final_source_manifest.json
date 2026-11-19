@@ -1,0 +1,9 @@
+{
+  "phase": "after targeted refinements",
+  "files": {
+    "job_agent.py": "22d79100cb2a39373c28ff36d738652f226063602bb363b68c17c02d4cd1708e",
+    "job_mcp_server.py": "7723b1f97685d1285c7ff7096552c790c482fb1d87bcff488d3f11aa6574dae2",
+    "grounding.py": "781015b8de109dce3ab3de40257062c04bc319012f1739c42a7c719075441858",
+    "evaluate.py": "1bad1c112ac0a742fae9844d80e262fcd19776cf933099fd136eb4456da9bceb"
+  }
+}

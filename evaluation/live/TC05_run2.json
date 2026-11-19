@@ -1,0 +1,364 @@
+{
+  "case_id": "TC05",
+  "repeat": 2,
+  "input": "Please remember that I prefer remote jobs. [restart] Use my saved preferences to find jobs.",
+  "expected": "Save only remote=true; restart MCP; read preferences then search remote=true.",
+  "checks": {
+    "exact_ids": true,
+    "search_and_handoff": true,
+    "grounding": true,
+    "isolated_persistence": true,
+    "read_before_search": true,
+    "critic_at_least_four": true
+  },
+  "passed": true,
+  "critic": {
+    "accuracy": 4,
+    "honesty": 5,
+    "usefulness": 5,
+    "rationale": "The response reproduces the exact job listings returned by the tools and correctly notes they are fictional and lack key details, matching the evidence. Minor inconsistency appears in the irrelevant comment about \"remote=False,\" which slightly reduces accuracy. Limitations are clearly stated, and the answer is practical for the user."
+  },
+  "turns": [
+    {
+      "request": "Please remember that I prefer remote jobs.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [],
+        "message": "Your preference for remote jobs has been saved."
+      },
+      "tools": [
+        {
+          "tool": "save_preference",
+          "arguments": {
+            "key": "remote",
+            "value": "true"
+          },
+          "output": "Saved preference 'remote'.",
+          "is_error": false,
+          "seconds": 0.0072
+        }
+      ],
+      "handoff": false,
+      "guardrails": [],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1335,
+          "output_tokens": 206,
+          "total_tokens": 1541
+        }
+      },
+      "records": [],
+      "analyst": null,
+      "final": "Preference tool results: [\"Saved preference 'remote'.\"]",
+      "seconds": 8.678
+    },
+    {
+      "request": "Use my saved preferences to find jobs.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [
+          1,
+          3,
+          5,
+          6,
+          8
+        ],
+        "message": "Search applied saved preference remote=true with default filters."
+      },
+      "tools": [
+        {
+          "tool": "get_saved_preferences",
+          "arguments": {},
+          "output": {
+            "remote": true
+          },
+          "is_error": false,
+          "seconds": 0.0036
+        },
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "remote": true
+          },
+          "output": [
+            {
+              "id": 1,
+              "title": "IT Help Desk Technician",
+              "company": "SunCoast Technology",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 18,
+              "salary_max": 22,
+              "skills": [
+                "customer service",
+                "Windows",
+                "troubleshooting",
+                "networking"
+              ],
+              "salary_unit": "USD/hour"
+            },
+            {
+              "id": 3,
+              "title": "Junior Software Developer",
+              "company": "Florida Software Solutions",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Full-time",
+              "salary_min": 24,
+              "salary_max": 32,
+              "skills": [
+                "Python",
+                "JavaScript",
+                "Git",
+                "SQL"
+              ],
+              "salary_unit": "USD/hour"
+            },
+            {
+              "id": 5,
+              "title": "Junior Web Developer",
+              "company": "Coastal Web Group",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 19,
+              "salary_max": 26,
+              "skills": [
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "React"
+              ],
+              "salary_unit": "USD/hour"
+            },
+            {
+              "id": 6,
+              "title": "Data Analyst Intern",
+              "company": "Florida Analytics",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 18,
+              "salary_max": 23,
+              "skills": [
+                "Python",
+                "SQL",
+                "Excel",
+                "data analysis"
+              ],
+              "salary_unit": "USD/hour"
+            },
+            {
+              "id": 8,
+              "title": "Customer Support Representative",
+              "company": "Florida Services Inc.",
+              "location": "Remote",
+              "remote": true,
+              "employment_type": "Part-time",
+              "salary_min": 16,
+              "salary_max": 20,
+              "skills": [
+                "customer service",
+                "communication",
+                "problem solving"
+              ],
+              "salary_unit": "USD/hour"
+            }
+          ],
+          "is_error": false,
+          "seconds": 0.0045
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1413,
+          "output_tokens": 353,
+          "total_tokens": 1766
+        },
+        "finder_followup": {
+          "requests": 2,
+          "input_tokens": 1935,
+          "output_tokens": 143,
+          "total_tokens": 2078
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 663,
+          "output_tokens": 769,
+          "total_tokens": 1432
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 1646,
+          "output_tokens": 407,
+          "total_tokens": 2053
+        }
+      },
+      "records": [
+        {
+          "id": 1,
+          "title": "IT Help Desk Technician",
+          "company": "SunCoast Technology",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 18,
+          "salary_max": 22,
+          "skills": [
+            "customer service",
+            "Windows",
+            "troubleshooting",
+            "networking"
+          ],
+          "salary_unit": "USD/hour"
+        },
+        {
+          "id": 3,
+          "title": "Junior Software Developer",
+          "company": "Florida Software Solutions",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Full-time",
+          "salary_min": 24,
+          "salary_max": 32,
+          "skills": [
+            "Python",
+            "JavaScript",
+            "Git",
+            "SQL"
+          ],
+          "salary_unit": "USD/hour"
+        },
+        {
+          "id": 5,
+          "title": "Junior Web Developer",
+          "company": "Coastal Web Group",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 19,
+          "salary_max": 26,
+          "skills": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "React"
+          ],
+          "salary_unit": "USD/hour"
+        },
+        {
+          "id": 6,
+          "title": "Data Analyst Intern",
+          "company": "Florida Analytics",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 18,
+          "salary_max": 23,
+          "skills": [
+            "Python",
+            "SQL",
+            "Excel",
+            "data analysis"
+          ],
+          "salary_unit": "USD/hour"
+        },
+        {
+          "id": 8,
+          "title": "Customer Support Representative",
+          "company": "Florida Services Inc.",
+          "location": "Remote",
+          "remote": true,
+          "employment_type": "Part-time",
+          "salary_min": 16,
+          "salary_max": 20,
+          "skills": [
+            "customer service",
+            "communication",
+            "problem solving"
+          ],
+          "salary_unit": "USD/hour"
+        }
+      ],
+      "analyst": {
+        "assessments": [
+          {
+            "job_id": 1,
+            "fit_score": 5,
+            "matched_skills": [],
+            "missing_information": [
+              "posting_freshness",
+              "qualifications"
+            ]
+          },
+          {
+            "job_id": 3,
+            "fit_score": 5,
+            "matched_skills": [],
+            "missing_information": [
+              "posting_freshness",
+              "qualifications"
+            ]
+          },
+          {
+            "job_id": 5,
+            "fit_score": 5,
+            "matched_skills": [],
+            "missing_information": [
+              "posting_freshness",
+              "qualifications"
+            ]
+          },
+          {
+            "job_id": 6,
+            "fit_score": 5,
+            "matched_skills": [],
+            "missing_information": [
+              "posting_freshness",
+              "qualifications"
+            ]
+          },
+          {
+            "job_id": 8,
+            "fit_score": 5,
+            "matched_skills": [],
+            "missing_information": [
+              "posting_freshness",
+              "qualifications"
+            ]
+          }
+        ]
+      },
+      "filters": {
+        "remote": true
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'remote': True}\nSkills use any-match; remote=False means no remote restriction.\n[1] IT Help Desk Technician | SunCoast Technology\nRemote | Part-time | USD 18-22/hour\nListing skills: customer service, Windows, troubleshooting, networking\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: none identified\nNot verified: posting_freshness, qualifications\n[3] Junior Software Developer | Florida Software Solutions\nRemote | Full-time | USD 24-32/hour\nListing skills: Python, JavaScript, Git, SQL\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: none identified\nNot verified: posting_freshness, qualifications\n[5] Junior Web Developer | Coastal Web Group\nRemote | Part-time | USD 19-26/hour\nListing skills: HTML, CSS, JavaScript, React\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: none identified\nNot verified: posting_freshness, qualifications\n[6] Data Analyst Intern | Florida Analytics\nRemote | Part-time | USD 18-23/hour\nListing skills: Python, SQL, Excel, data analysis\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: none identified\nNot verified: posting_freshness, qualifications\n[8] Customer Support Representative | Florida Services Inc.\nRemote | Part-time | USD 16-20/hour\nListing skills: customer service, communication, problem solving\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: none identified\nNot verified: posting_freshness, qualifications\nConfirm schedule, qualifications, availability and pay with the actual employer before acting.",
+      "seconds": 45.604
+    }
+  ],
+  "human_review": "not required by M3 plan",
+  "timestamp_utc": "2026-11-19T04:12:05.886433+00:00",
+  "initial_critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 4,
+    "rationale": "The response reproduces the provided job listings and analyst assessments accurately, and it clearly discloses that the listings are fictional and unverified, meeting honesty requirements. It delivers a filtered set of jobs with key details, which is helpful, but it offers minimal personalization beyond the remote filter and provides limited insight into fit, leaving modest room for improvement in usefulness."
+  },
+  "protocol_repair": "One rescore with literal raw MCP tool events; no agent rerun or selective retries."
+}

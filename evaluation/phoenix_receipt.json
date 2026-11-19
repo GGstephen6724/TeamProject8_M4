@@ -1,0 +1,6 @@
+{
+  "collector": "local Phoenix",
+  "health": "200 OK",
+  "persisted_spans": 840,
+  "note": "Includes main suite, critic evidence repair, and two targeted follow-ups. Not external-user research."
+}

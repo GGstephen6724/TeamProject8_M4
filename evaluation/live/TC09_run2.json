@@ -1,0 +1,128 @@
+{
+  "case_id": "TC09",
+  "repeat": 2,
+  "input": "Search for remote jobs.",
+  "expected": "Both missing and malformed database: clear unavailable message, no crash.",
+  "checks": {
+    "exact_ids": true,
+    "both_errors_reported": true
+  },
+  "passed": true,
+  "critic": null,
+  "turns": [
+    {
+      "request": "Search for remote jobs.",
+      "finder": {
+        "kind": "error",
+        "job_ids": [],
+        "message": "Database error: listings not available."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "",
+            "location": "",
+            "remote": true,
+            "employment_type": "",
+            "minimum_salary": 0,
+            "skills": "",
+            "skill_match": "any",
+            "salary_period": "hour"
+          },
+          "output": "ERROR: jobs.json was not found.",
+          "is_error": false,
+          "seconds": 0.0057
+        }
+      ],
+      "handoff": false,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": false,
+          "action": "suppress model claims; render raw tool evidence"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1291,
+          "output_tokens": 296,
+          "total_tokens": 1587
+        }
+      },
+      "records": [],
+      "analyst": null,
+      "filters": {
+        "keywords": "",
+        "location": "",
+        "remote": true,
+        "employment_type": "",
+        "minimum_salary": 0,
+        "skills": "",
+        "skill_match": "any",
+        "salary_period": "hour"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': '', 'location': '', 'remote': True, 'employment_type': '', 'minimum_salary': 0, 'skills': '', 'skill_match': 'any', 'salary_period': 'hour'}\nSkills use any-match; remote=False means no remote restriction.\nDatabase unavailable: ERROR: jobs.json was not found.",
+      "seconds": 15.53
+    },
+    {
+      "request": "Search for remote jobs.",
+      "finder": {
+        "kind": "error",
+        "job_ids": [],
+        "message": "Database error encountered while searching."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "",
+            "location": "",
+            "remote": true,
+            "employment_type": "",
+            "minimum_salary": 0,
+            "skills": "",
+            "skill_match": "any",
+            "salary_period": "hour"
+          },
+          "output": "ERROR: jobs.json contains invalid JSON.",
+          "is_error": false,
+          "seconds": 0.0058
+        }
+      ],
+      "handoff": false,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": false,
+          "action": "suppress model claims; render raw tool evidence"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1373,
+          "output_tokens": 399,
+          "total_tokens": 1772
+        }
+      },
+      "records": [],
+      "analyst": null,
+      "filters": {
+        "keywords": "",
+        "location": "",
+        "remote": true,
+        "employment_type": "",
+        "minimum_salary": 0,
+        "skills": "",
+        "skill_match": "any",
+        "salary_period": "hour"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': '', 'location': '', 'remote': True, 'employment_type': '', 'minimum_salary': 0, 'skills': '', 'skill_match': 'any', 'salary_period': 'hour'}\nSkills use any-match; remote=False means no remote restriction.\nDatabase unavailable: ERROR: jobs.json contains invalid JSON.",
+      "seconds": 17.897
+    }
+  ],
+  "human_review": "not required by M3 plan",
+  "timestamp_utc": "2026-11-19T04:14:03.544898+00:00"
+}

@@ -1,121 +1,112 @@
-# TeamProject8_M3: Multi-Agent Job Finding System
+# TeamProject8_M4: Evaluated Job Finding Agent
 
-**Course:** CEN 4930
-**Milestone:** 3
-**Team:** George Stephen and Manuel Rosales
+**Course:** CEN 4930 | **Team:** George Stephen and Manuel Rosales
+**Status:** engineering evaluation complete; real external-user validation pending. The report is a draft.
 
-## Problem
+This two-agent educational prototype interprets job-search requests, searches eight fictional listings through MCP, and evaluates record-grounded fit. It does not verify current vacancies, contact employers, or submit applications.
 
-Job seekers waste time searching through listings that do not match their location, schedule, pay, or skills. This project uses a multi-agent system that interprets job-search requests, searches a local job database, and evaluates how well the returned listings match the user's criteria.
+## Evidence at a glance
 
-## System Architecture
+- Full precommitted suite: **9/10 cases (90%)**, **26/30 individual runs**. Three repetitions; at least two pass for case success.
+- Corrected independent critic mean: **4.71/5** across accuracy, honest limitations, and usefulness. A run requires each applicable dimension >=4.
+- Later targeted reruns: TC03 no-match guidance **3/3**; TC04 keyword punctuation **3/3**. These do not overwrite the main matrix.
+- **31 unit tests pass.** Eight controlled engineering checks improve from **0/8 to 8/8** against M3 commit `8a6d910`.
+- Raw MCP evidence, SDK usage, local OpenInference spans and a Phoenix ingestion receipt are included.
+- **0 real external-user sessions are available.** Five explicitly fictional rehearsals are in `study/simulated_sessions.json`. They are not validation evidence or replacements for the required real sessions.
+- Human safety review of TC03/TC07/TC08 and actual team approval of the proposed decision remain pending.
 
-The system uses two agents with separate responsibilities:
+## Architecture and guardrails
 
-1. **Job Finding Agent:** Interprets the user's request, selects search filters, calls MCP tools, and reports the actual results.
-2. **Job Fit Analyst:** Evaluates the search results against the original request and explains matches, limitations, and missing information.
-
-A Python orchestrator runs the agents sequentially. After the Job Finding Agent calls `search_jobs`, the orchestrator passes the original request and the first agent's final text output to the Job Fit Analyst. The analyst runs only when a search tool call is detected.
-
-The MCP server provides job-search tools and persistent preference storage.
+1. The **Job Finding Agent** chooses structured filters and calls MCP. Its search reply is validated against actual tool records. A known vague request clarifies before model/tool calls.
+2. The orchestrator hands the original request, raw MCP records, applied filters and first-agent draft to the **Job Fit Analyst**. The handoff requires a recorded search call, not a promise in model prose.
+3. The analyst has no tools. Its record IDs and skill strings must match evidence. Invalid assessments are withheld.
+4. The user-facing renderer copies listing facts from raw records. Model text cannot replace a company, title, pay or location. Fit scores are explicitly labeled judgments.
+5. Preference mutation requires recognizable current-request consent; saved files use atomic replacement. This is still local single-user storage, not account authentication.
 
 ```mermaid
 flowchart TD
-    U[User request] --> A[Job Finding Agent]
-    A -->|MCP tool calls| M[MCP Server]
-    M --> J[(jobs.json)]
-    M --> P[(memory.json)]
-    M -->|Tool results| A
-    A --> O[Python orchestrator]
-    O -->|If search_jobs was called| F[Job Fit Analyst]
-    O -->|Otherwise| R[Return first agent response]
-    F --> R[Final response]
+    U[User request] --> G[Clarification and mutation-consent checks]
+    G --> A[Job Finding Agent: filter selection and MCP loop]
+    A --> M[Local stdio MCP server]
+    M --> J[(Eight fictional job records)]
+    M --> P[(Local approved preferences)]
+    M --> E[Recorded raw tool evidence]
+    E --> H[Explicit JSON evidence handoff]
+    A --> H
+    H --> B[Job Fit Analyst: no tools]
+    B --> V[Validate IDs and skills]
+    E --> R[Canonical listing renderer]
+    V --> R
 ```
 
-## Features
+## Setup and run
 
-- Natural-language job-search requests.
-- Filtering by keywords, location, remote status, employment type, minimum salary, and skills.
-- A second agent that evaluates returned listings against the user's criteria.
-- Persistent preferences through `save_preference`, `get_saved_preferences`, and `clear_saved_preferences`.
-- Honest no-match responses instead of fabricated listings.
-- Clarifying questions for ambiguous requests.
-- MCP server communication over standard input/output (stdio).
+Use Python 3.11+ and the course NRP credentials in a private `.env`. Tested with openai-agents 0.22.0, openai 3.3.1, mcp 1.29.1 and pydantic 2.13.4. The code imports FastMCP from `mcp.server.fastmcp`; the separate `fastmcp` package is not needed.
 
-## Technology Stack
-
-- Python
-- OpenAI Agents SDK
-- OpenAI-compatible course NRP inference endpoint using `gpt-oss`
-- Model Context Protocol (MCP) and FastMCP
-- JSON files for sample job data and saved preferences
-- `pytest` and `unittest` for automated testing
-
-## Setup and Run
-
-Requires Python 3.10 or newer and access to the course NRP endpoint.
-
-1. Clone the repository and open a terminal in the project folder.
-2. Create and activate a virtual environment if desired.
-3. Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Create a `.env` file in the project root with the course-provided settings:
-
-   ```text
-   NRP_API_KEY=your_key_here
-   NRP_BASE_URL=your_course_nrp_base_url
-   ```
-
-   Keep `.env` private. Never commit API keys or other credentials.
-
-5. Start the system:
-
-   ```bash
-   python job_agent.py
-   ```
-
-6. Enter a job-search request at the `You:` prompt. Type `exit` to quit.
-
-## Testing
-
-Run the automated tests with:
-
-```bash
-python -m pytest -v
+```sh
+python -m pip install -r requirements.txt
+python job_agent.py
 ```
 
-The current test suite contains 16 passing tests:
+The script locates `.env` beside itself or in parent directories. It also accepts existing `NRP_API_KEY`, `NRP_BASE_URL`, and optional `NRP_MODEL` environment variables. `NRP_ENV_FILE` can point to a private configuration file for a test session. No credential is committed. MCP starts automatically with the current Python interpreter, using file-relative paths.
 
-- 10 job-search tests covering filters, missing or malformed data, and no-match results.
-- 6 memory tests covering saving, retrieving, validating, and clearing preferences.
+Optional interactive transcript: `python job_agent.py --trace local_trace.jsonl`. Do not publish personal transcripts without consent and anonymization.
 
-Manual demonstrations have also verified matching searches, no-match searches, saved-preference persistence across restart, clarification for an ambiguous request, and a refusal to fabricate jobs. These demonstrations do not replace the remaining planned integration tests.
+## Reproduce checks and evaluations
 
-See `tests/test_cases.md` for the evaluation plan, expected results, verification status, and limitations.
+```sh
+python -m unittest discover -s tests -v
+python measure_improvements.py
+python -m pip install -r requirements-evaluation.txt
+python evaluate.py --repeats 3 --concurrency 3
+```
 
-## Known Limitations
+`evaluate.py` uses isolated fixtures and memory; it does not edit the main jobs database. TC05 saves, restarts MCP, reads and reuses preferences. TC07 inserts a malicious fixture only inside its temporary dataset. TC09 tests both missing and malformed data.
 
-1. **Sample data only:** `jobs.json` contains eight fictional listings. The system is not connected to live job boards.
-2. **Rule-based matching:** Keyword and skill matching use simple text rules and do not provide comprehensive semantic matching.
-3. **Model-dependent filter selection:** The agent interprets requests using a language model, so filter choices may vary.
-4. **Text-based agent transfer:** The orchestrator passes the first agent's final text output to the analyst rather than a structured raw MCP result object.
-5. **Local persistence:** Preferences are stored in `memory.json` on the machine running the project. This is not a multi-user database.
-6. **Inference dependency:** Agent responses depend on the availability and behavior of the course NRP endpoint.
-7. **No job applications:** The system does not contact employers, submit applications, or verify whether a listing is currently open.
+For optional local Phoenix collection, run a compatible Phoenix installation separately and set `PHOENIX_COLLECTOR_ENDPOINT=http://127.0.0.1:6006/v1/traces`. This execution used an isolated `uv run --no-project --with arize-phoenix --with fastmcp --python 3.12 phoenix serve` environment to avoid changing the app's dependencies. JSON span export also works without a collector. Never point private user traces to an unapproved remote service.
+
+## Evaluation files and provenance
+
+- `evaluation_results.csv`: the main ten-case results, including full actual outputs from all three repetitions, expected outputs, pass/fail and critic scores.
+- `evaluation/live/TC*_run*.json`: actual agent/tool records and corrected critic scores. Original critic scores are retained in each applicable record and in `evaluation/initial_critic/`.
+- `evaluation/live/summary.json`: full-suite summary. The main suite remains 9/10 after the critic evidence correction.
+- `evaluation/followup_TC03/` and `evaluation/followup_TC04/`: later targeted runs after two specific fixes. They are separate phases, not a claim that the entire suite was rerun on the final revision.
+- `evaluation/improvement_results.csv`: direct-tool/mutation checks against the actual M3 source, not live-user metrics.
+- `evaluation/phoenix_receipt.json`, `evaluation/live/spans.jsonl`: local trace evidence. Spans include the original suite, the critic repair and targeted runs.
+- `tests/evaluation_results.md`: George Stephen's earlier teammate-reported 10/10 result from commit `d55baf6a`, not the new repeated run. It does not record three repetitions or critic scores.
+
+The initial critic context omitted literal MCP status strings. Every eligible output was rescored once with the full raw events; no agent outputs were regenerated for that protocol repair. Initial accuracy/limitation errors improved, but weak no-match usefulness remained a failure until a later product fix. Do not compare the teammate-reported 100% and the new stricter 90% as a measured regression in the agent.
 
 ## CHANGES
 
-### Milestone 3
+### M4: reason and measured impact
 
-- Extended the M2 single-agent prototype into a two-agent workflow.
-- Added the Job Fit Analyst to assess returned listings against user requirements.
-- Added sequential orchestration that invokes the analyst after an actual `search_jobs` tool call.
-- Added MCP tools for saving, retrieving, and clearing user-approved job preferences.
-- Added persistent JSON-based preference storage and input validation.
-- Added automated tests for job search and memory operations.
-- Expanded the evaluation plan to cover handoff behavior, ambiguous requests, prompt injection, reliability, and combined filters.
-- Documented architecture, evaluation evidence, and remaining limitations.
+| Change | Why | Measured impact and limits |
+|---|---|---|
+| Raw JSON evidence handoff | M3 sent only Agent 1 prose. | Analyst receives actual tool records in every searched integration run. No isolated numerical attribution for this architecture change is claimed. |
+| Structured finder/analyst contracts and canonical renderer | Stop unsupported IDs, skills and invented listing facts reaching the UI. | Three controlled invalid outputs had no code check in M3; all 3 are rejected in M4. Main-run grounding checks pass; this is not general injection-proofing. |
+| Employment-type normalization | M3 rejected `part time` and `full time`. | 0/2 direct checks -> 2/2. The original spelling is preserved in saved preferences; normalization occurs during search. |
+| Explicit annual salary period | M3 compared annual requests against hourly pay. | 0/1 -> 1/1 on a 40,000/year scenario using an explicit 2,080-hour assumption. Not an employer salary guarantee. |
+| Any versus all skill matching | M3 silently used any-skill semantics. | 0/1 -> 1/1 for a request requiring both Python and React; no matching sample record exists. |
+| Keyword punctuation handling | One full-suite TC04 run generated comma-separated role terms and missed a real sample match. | Direct check 0/1 -> 1/1; TC04 integration improves from 2/3 to 3/3 in a separate targeted run. Full-suite case pass remains majority-of-three. |
+| Explicit no-match next steps | TC03 was accurate but critic-rated usefulness 2-3/5. | Main TC03 passes 0/3; targeted post-fix TC03 passes 3/3. Original failure records remain. No claim of real-user usefulness is made. |
+| Consent check, atomic preference writes, numeric/schema validation | Limit accidental preference changes, partial writes and malformed inputs. | Unit/regression checks cover consent including negation, non-finite salary, corrupt memory and malformed/duplicate records. No independent full-suite percentage attribution. |
+| Critic evidence repair | Empty records lacked the literal no-match tool status in the critic payload. | All 24 eligible outputs rescored exactly once; main case pass count stays 9/10. This improves evaluation fidelity, not agent performance. |
+| Local tracing and observed usage | M3 token counts were derived from code. | Actual per-agent usage and Phoenix spans replace derived workload counts for this fixture sample. Pricing remains an inherited scenario. |
+| Real-session recorder and labeled rehearsals | Required external evidence has not been collected. | 0 completed sessions; no invented quotations, ratings or validation claims. |
+
+### Inherited M3 contributions
+
+George Stephen built the two-agent system, sequential handoff, MCP memory, keyword aliases and original 16 tests. Manuel's M2 fixes and M3 report/evaluation plan remain in the history. M4 starts from George's actual November 18 evaluation commit; new commits use current dates and the actual configured author. No contributions or timestamps are fabricated.
+
+## Real testing and proposed decision
+
+Read `study/README.md`; capture a consenting external session with `python user_test_session.py --tester T01`. `.local_sessions/` is ignored. The M3 plan targets six participants, including two non-CS and two working students; the guide minimum is five. Preserve the original thresholds or document a prospective amendment.
+
+The report proposes **scope down to a supervised educational pilot**. It is not a team-approved conclusion or evidence of market validation. The original M2 BMC artifact was not located, so the provisional nine-block canvas is explicitly compared with the available M3 narrative, not falsely represented as a verified M2 diff.
+
+## Known limitations and AI disclosure
+
+Fictional data; model-dependent filters; limited keyword semantics; unverified vacancies; no multi-user identity isolation; noisy same-family critic judgments; CLI/filter explanations that still need human comprehension testing. Main-case safety review, actual team approval, external testing and buyer/data-feed validation remain open.
+
+OpenAI Codex implemented and tested this continuation at Manuel's request, prepared the report and generated five explicitly fictional rehearsals. NRP gpt-oss produced real agent and critic outputs. George's inherited work is preserved and attributed. No independent student review or new shared approval is claimed.

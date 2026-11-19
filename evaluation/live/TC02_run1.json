@@ -1,0 +1,153 @@
+{
+  "case_id": "TC02",
+  "repeat": 1,
+  "input": "Find me a full-time IT support job in Fort Myers that pays at least $20 per hour.",
+  "expected": "Technical Support Specialist, Gulf Systems, 20-25/hour only.",
+  "checks": {
+    "exact_ids": true,
+    "search_and_handoff": true,
+    "grounding": true,
+    "critic_at_least_four": true
+  },
+  "passed": true,
+  "critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 5,
+    "rationale": "The answer accurately reflects the only available job listing that meets the criteria, includes all provided details, labels the data as a non\u2011verified prototype, and warns the user to confirm specifics, thereby being truthful about limitations and highly useful."
+  },
+  "turns": [
+    {
+      "request": "Find me a full-time IT support job in Fort Myers that pays at least $20 per hour.",
+      "finder": {
+        "kind": "search",
+        "job_ids": [
+          2
+        ],
+        "message": "Search completed."
+      },
+      "tools": [
+        {
+          "tool": "search_jobs",
+          "arguments": {
+            "keywords": "IT support",
+            "location": "Fort Myers",
+            "remote": false,
+            "employment_type": "full-time",
+            "minimum_salary": 20,
+            "salary_period": "hour"
+          },
+          "output": [
+            {
+              "id": 2,
+              "title": "Technical Support Specialist",
+              "company": "Gulf Systems",
+              "location": "Fort Myers, FL",
+              "remote": false,
+              "employment_type": "Full-time",
+              "salary_min": 20,
+              "salary_max": 25,
+              "skills": [
+                "customer service",
+                "SQL",
+                "troubleshooting",
+                "technical support"
+              ],
+              "salary_unit": "USD/hour"
+            }
+          ],
+          "is_error": false,
+          "seconds": 0.004
+        }
+      ],
+      "handoff": true,
+      "guardrails": [
+        {
+          "name": "finder_ids",
+          "passed": true,
+          "action": "release evidence only"
+        },
+        {
+          "name": "analyst_grounding",
+          "passed": true,
+          "action": "release"
+        }
+      ],
+      "usage": {
+        "finder": {
+          "requests": 2,
+          "input_tokens": 1447,
+          "output_tokens": 198,
+          "total_tokens": 1645
+        },
+        "analyst": {
+          "requests": 1,
+          "input_tokens": 379,
+          "output_tokens": 420,
+          "total_tokens": 799
+        },
+        "critic": {
+          "requests": 1,
+          "input_tokens": 665,
+          "output_tokens": 277,
+          "total_tokens": 942
+        }
+      },
+      "records": [
+        {
+          "id": 2,
+          "title": "Technical Support Specialist",
+          "company": "Gulf Systems",
+          "location": "Fort Myers, FL",
+          "remote": false,
+          "employment_type": "Full-time",
+          "salary_min": 20,
+          "salary_max": 25,
+          "skills": [
+            "customer service",
+            "SQL",
+            "troubleshooting",
+            "technical support"
+          ],
+          "salary_unit": "USD/hour"
+        }
+      ],
+      "analyst": {
+        "assessments": [
+          {
+            "job_id": 2,
+            "fit_score": 5,
+            "matched_skills": [
+              "technical support"
+            ],
+            "missing_information": [
+              "schedule",
+              "posting_freshness",
+              "qualifications",
+              "commute"
+            ]
+          }
+        ]
+      },
+      "filters": {
+        "keywords": "IT support",
+        "location": "Fort Myers",
+        "remote": false,
+        "employment_type": "full-time",
+        "minimum_salary": 20,
+        "salary_period": "hour"
+      },
+      "final": "EDUCATIONAL PROTOTYPE - fictional sample listings, not verified vacancies.\nApplied filters: {'keywords': 'IT support', 'location': 'Fort Myers', 'remote': False, 'employment_type': 'full-time', 'minimum_salary': 20, 'salary_period': 'hour'}\nSkills use any-match; remote=False means no remote restriction.\n[2] Technical Support Specialist | Gulf Systems\nFort Myers, FL | Full-time | USD 20-25/hour\nListing skills: customer service, SQL, troubleshooting, technical support\nAnalyst fit judgment: 5/5 (assessment, not an employer decision).\nSupported skill overlap: technical support\nNot verified: schedule, posting_freshness, qualifications, commute\nConfirm schedule, qualifications, availability and pay with the actual employer before acting.",
+      "seconds": 25.156
+    }
+  ],
+  "human_review": "not required by M3 plan",
+  "timestamp_utc": "2026-11-19T04:09:23.117229+00:00",
+  "initial_critic": {
+    "accuracy": 5,
+    "honesty": 5,
+    "usefulness": 4,
+    "rationale": "The answer faithfully repeats the provided job data with no invented details and clearly flags the listing as a non\u2011verified prototype, fully disclosing missing information. It meets the user's request but offers only a single matching job, limiting overall practicality."
+  },
+  "protocol_repair": "One rescore with literal raw MCP tool events; no agent rerun or selective retries."
+}

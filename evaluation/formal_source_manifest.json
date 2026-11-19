@@ -1,0 +1,10 @@
+{
+  "phase": "main 30 agent runs, before keyword punctuation refinement",
+  "files": {
+    "job_agent.py": "22d79100cb2a39373c28ff36d738652f226063602bb363b68c17c02d4cd1708e",
+    "job_mcp_server.py": "a3ca6673e94dff033acc3c9666ba1c8a1d297a2f7272fc3c88f0b0bfd7b57f48",
+    "grounding.py": "82de82141abb9deb63a035e7bc87395598a4316a56cf50b2fb9460b3ace4ed24",
+    "evaluate.py": "f3916d0b2ee6a1adbbdb2ba883fea215491c9344d2be509596fcc6412dfa3cae"
+  },
+  "note": "Fingerprint captured after main generation and before punctuation refinement. The critic payload repair was already in the working source; initial versus repaired scoring is recorded separately."
+}

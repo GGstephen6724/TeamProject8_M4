@@ -1,0 +1,36 @@
+test_all_skills_not_any (test_m4.M4RegressionTests.test_all_skills_not_any) ... ok
+test_analyst_fabrication_caught (test_m4.M4RegressionTests.test_analyst_fabrication_caught) ... ok
+test_annual_salary (test_m4.M4RegressionTests.test_annual_salary) ... ok
+test_comma_separated_keyword_aliases (test_m4.M4RegressionTests.test_comma_separated_keyword_aliases) ... ok
+test_corrupt_memory_is_empty (test_m4.M4RegressionTests.test_corrupt_memory_is_empty) ... ok
+test_duplicate_id_rejected (test_m4.M4RegressionTests.test_duplicate_id_rejected) ... ok
+test_employment_variants (test_m4.M4RegressionTests.test_employment_variants) ... ok
+test_invalid_schema_rejected (test_m4.M4RegressionTests.test_invalid_schema_rejected) ... ok
+test_memory_nonfinite_rejected (test_m4.M4RegressionTests.test_memory_nonfinite_rejected) ... ok
+test_no_match_offers_explicit_options (test_m4.M4RegressionTests.test_no_match_offers_explicit_options) ... ok
+test_nonfinite_salary_rejected (test_m4.M4RegressionTests.test_nonfinite_salary_rejected) ... ok
+test_preference_mutation_needs_current_consent (test_m4.M4RegressionTests.test_preference_mutation_needs_current_consent) ... ok
+test_renderer_copies_facts (test_m4.M4RegressionTests.test_renderer_copies_facts) ... ok
+test_search_fabrication_caught (test_m4.M4RegressionTests.test_search_fabrication_caught) ... ok
+test_unsupported_skill_caught (test_m4.M4RegressionTests.test_unsupported_skill_caught) ... ok
+test_clear_preferences (test_memory.MemoryTests.test_clear_preferences) ... ok
+test_reject_invalid_remote_value (test_memory.MemoryTests.test_reject_invalid_remote_value) ... ok
+test_reject_negative_salary (test_memory.MemoryTests.test_reject_negative_salary) ... ok
+test_reject_unsupported_key (test_memory.MemoryTests.test_reject_unsupported_key) ... ok
+test_remote_is_saved_as_boolean (test_memory.MemoryTests.test_remote_is_saved_as_boolean) ... ok
+test_save_and_retrieve_preference (test_memory.MemoryTests.test_save_and_retrieve_preference) ... ok
+test_employment_type_filter (test_search.JobSearchTests.test_employment_type_filter) ... ok
+test_invalid_database_json (test_search.JobSearchTests.test_invalid_database_json) ... ok
+test_local_it_support_minimum_salary (test_search.JobSearchTests.test_local_it_support_minimum_salary) ... ok
+test_minimum_salary_filter (test_search.JobSearchTests.test_minimum_salary_filter) ... ok
+test_missing_database (test_search.JobSearchTests.test_missing_database) ... ok
+test_no_matching_jobs (test_search.JobSearchTests.test_no_matching_jobs) ... ok
+test_remote_filter (test_search.JobSearchTests.test_remote_filter) ... ok
+test_remote_part_time_minimum_salary (test_search.JobSearchTests.test_remote_part_time_minimum_salary) ... ok
+test_skill_filter (test_search.JobSearchTests.test_skill_filter) ... ok
+test_software_development_keyword (test_search.JobSearchTests.test_software_development_keyword) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.643s
+
+OK

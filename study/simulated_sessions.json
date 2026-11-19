@@ -1,0 +1,66 @@
+{
+  "warning": "FICTIONAL SIMULATIONS - NOT REAL USER RESEARCH",
+  "real_external_sessions": 0,
+  "sessions": [
+    {
+      "id": "SIM01",
+      "tester": "Fictional working non-CS student",
+      "task": "Find remote part-time work at $18/hour; compare skill overlap.",
+      "steps": "Hypothetical: enters constraints, inspects the three sample matches, then compares customer-service overlap with technical skills.",
+      "stuck": "Hypothesis: could read a fit score as a hiring probability or assume every named skill is required.",
+      "surprise": "No real surprise was observed. Rehearsal highlights that any-skill matching needs explanation.",
+      "reuse": "Hypothesis: might return if listings were live and the distinction between evidence and fit judgment were clear.",
+      "synthetic": true,
+      "date": "Not conducted",
+      "format": "Fictional tabletop rehearsal; not a user session"
+    },
+    {
+      "id": "SIM02",
+      "tester": "Fictional CS student seeking an internship",
+      "task": "Find Python work at a minimum $24/hour.",
+      "steps": "Hypothetical: asks for Python plus pay, sees Junior Software Developer, then asks whether it is an internship.",
+      "stuck": "Hypothesis: could assume a returned full-time developer role satisfies an unstated internship requirement.",
+      "surprise": "No observed surprise. Rehearsal exposes the gap between a matching skill and an appropriate career stage.",
+      "reuse": "Hypothesis: might return with explicit role-level and internship filters plus verified employer requirements.",
+      "synthetic": true,
+      "date": "Not conducted",
+      "format": "Fictional tabletop rehearsal; not a user session"
+    },
+    {
+      "id": "SIM03",
+      "tester": "Fictional local student with customer-service experience",
+      "task": "Find full-time IT support in Fort Myers, at least $20/hour.",
+      "steps": "Hypothetical: searches locally, inspects the Gulf Systems sample, then checks commute and schedule information.",
+      "stuck": "Hypothesis: location alone may be mistaken for a feasible commute or compatible timetable.",
+      "surprise": "No observed surprise. Missing schedule evidence is a useful debrief topic.",
+      "reuse": "Hypothesis: would need shift and commute information before considering the tool a replacement for a job board.",
+      "synthetic": true,
+      "date": "Not conducted",
+      "format": "Fictional tabletop rehearsal; not a user session"
+    },
+    {
+      "id": "SIM04",
+      "tester": "Fictional working student with a high pay threshold",
+      "task": "Search remote part-time work paying at least $40/hour.",
+      "steps": "Hypothetical: receives no matches, lowers the threshold deliberately, and compares the changed result set.",
+      "stuck": "Hypothesis: could interpret a sample no-match result as evidence that no such job exists anywhere.",
+      "surprise": "No observed surprise. The scenario tests whether the small-sample limitation is noticed.",
+      "reuse": "Hypothesis: may return if database coverage is transparent and the tool offers optional, explicit alternatives.",
+      "synthetic": true,
+      "date": "Not conducted",
+      "format": "Fictional tabletop rehearsal; not a user session"
+    },
+    {
+      "id": "SIM05",
+      "tester": "Fictional returning student with a stale remote preference",
+      "task": "Save remote=true, restart, reuse it, then search locally with an override.",
+      "steps": "Hypothetical: saves a preference, restarts, checks applied filters, and requests an explicit local override.",
+      "stuck": "Hypothesis: could forget the saved preference or confuse remote=false with onsite-only.",
+      "surprise": "No observed surprise. Rehearsal identifies preference transparency as a topic to verify with real participants.",
+      "reuse": "Hypothesis: may return if applied preferences are visible and easy to clear.",
+      "synthetic": true,
+      "date": "Not conducted",
+      "format": "Fictional tabletop rehearsal; not a user session"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "model": "gpt-oss",
+  "repetitions": 3,
+  "cases": 1,
+  "case_passes": 1,
+  "run_passes": 3,
+  "runs": 3,
+  "case_pass_rate": 100.0,
+  "critic_scores": [
+    {
+      "accuracy": 5,
+      "honesty": 5,
+      "usefulness": 5,
+      "rationale": "The response reproduces the only job listing from the provided evidence, correctly reflects its remote, part\u2011time status and $19\u2011$26/hr pay, and includes the required disclaimer about the fictional nature and missing details. No unsupported claims are made, and the information is directly applicable to the user\u2019s request."
+    },
+    {
+      "accuracy": 4,
+      "honesty": 5,
+      "usefulness": 5,
+      "rationale": "The answer correctly presents the single job from the evidence that meets the remote, part\u2011time, $18+/hour criteria and adds a clear disclaimer about its prototype nature and missing details. The only minor issue is an inaccurate note about \u2018remote=False meaning no remote restriction,\u2019 which does not reflect the evidence."
+    },
+    {
+      "accuracy": 5,
+      "honesty": 5,
+      "usefulness": 5,
+      "rationale": "The response faithfully reproduces the only job in the evidence, correctly noting its remote, part\u2011time status and $19\u2011$26\u202f/hour pay, and includes a clear disclaimer about verification and missing details, making it both accurate and transparently limited while providing a useful actionable listing."
+    }
+  ],
+  "human_safety_review": "PENDING",
+  "real_user_sessions": 0,
+  "phoenix_endpoint": "http://127.0.0.1:6006/v1/traces"
+}
